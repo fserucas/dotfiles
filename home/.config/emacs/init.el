@@ -136,42 +136,6 @@
 ;; Make sure that `~/.gnupg/gpg-agent.conf` has allow-loopback-pinentry.
 (setq epa-pinentry-mode 'loopback)
 
-
-;; Setup my identity
-(setq user-full-name "Francisco Seruca Salgado")
-(setq user-mail-address "francisco.p.p.s.salgado@gmail.com")
-
-;; Use external sendmail program to send mail.
-(setq send-mail-function 'sendmail-send-it)
-
-;; Ensure msmtp is used, just in case it is not symlinked as "sendmail".
-(setq sendmail-program "msmtp")
-
-;; Wait for sendmail completion and display any errors.
-(setq mail-interactive t)
-
-;; Pass the From header to msmtp to enable multiple sender configs.
-(setq message-sendmail-envelope-from 'header)
-
-;; Use Gnus with my IMAP server.
-(setq gnus-select-method '(nnimap "smtp.gmail.com"))
-
-;; Cite reply author with a date.
-(setq message-citation-line-format "On %a, %b %d, %Y at %H:%M %N wrote:")
-(setq message-citation-line-function 'message-insert-formatted-citation-line)
-
-;; Start message above the quote.
-(setq message-cite-reply-position 'above)
-
-;; Keep my reply in the associated thread, as expected with email discussion.
-;; This is not necessary for regular newsgroups because the usernet server does it automatically.
-;; But since I'm using Gnus with IMAP, here is the necessary setting:
-(setq gnus-parameters '((".*" (gcc-self . t))))
-(setq gnus-gcc-mark-as-read t)
-
-;; Keep Gnus in it's own window.
-(setq gnus-use-full-window nil)
-
 ;; Use `g` to refresh the summary. The default key is `M-g`, which is not common.
 ;;(keymap-set gnus-summary-mode-map "g" 'gnus-summary-rescan-group)
 
@@ -317,44 +281,6 @@
 ;; Make sure that `~/.gnupg/gpg-agent.conf` has allow-loopback-pinentry.
 (setq epa-pinentry-mode 'loopback)
 
-
-;; Setup my identity
-(setq user-full-name "Francisco Seruca Salgado")
-(setq user-mail-address "francisco.p.p.s.salgado@gmail.com")
-
-;; Use external sendmail program to send mail.
-(setq send-mail-function 'sendmail-send-it)
-
-;; Ensure msmtp is used, just in case it is not symlinked as "sendmail".
-(setq sendmail-program "msmtp")
-
-;; Wait for sendmail completion and display any errors.
-(setq mail-interactive t)
-
-;; Pass the From header to msmtp to enable multiple sender configs.
-(setq message-sendmail-envelope-from 'header)
-
-;; Use Gnus with my IMAP server.
-(setq gnus-select-method '(nnimap "smtp.gmail.com"))
-
-;; Cite reply author with a date.
-(setq message-citation-line-format "On %a, %b %d, %Y at %H:%M %N wrote:")
-(setq message-citation-line-function 'message-insert-formatted-citation-line)
-
-;; Start message above the quote.
-(setq message-cite-reply-position 'above)
-
-;; Keep my reply in the associated thread, as expected with email discussion.
-;; This is not necessary for regular newsgroups because the usernet server does it automatically.
-;; But since I'm using Gnus with IMAP, here is the necessary setting:
-(setq gnus-parameters '((".*" (gcc-self . t))))
-(setq gnus-gcc-mark-as-read t)
-
-;; Keep Gnus in it's own window.
-(setq gnus-use-full-window nil)
-
-;; Use `g` to refresh the summary. The default key is `M-g`, which is not common.
-;;(keymap-set gnus-summary-mode-map "g" 'gnus-summary-rescan-group)
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
