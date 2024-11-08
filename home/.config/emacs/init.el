@@ -24,6 +24,8 @@
   :ensure t )
 (use-package orderless
   :ensure t )
+(use-package which-key
+  :ensure t )
 
 ;; To load this while using emacs run M-x eval-buffer
 
@@ -71,6 +73,13 @@
 
 ;; Make the completion suggest file paths.
 (add-hook 'completion-at-point-functions #'cape-file)
+
+(use-package corfu
+  :ensure t)
+(use-package corfu-terminal
+  :ensure t)
+(use-package cape
+  :ensure t)
 
 ;; Activate in buffer completion everywhere.
 (global-corfu-mode)
@@ -243,6 +252,7 @@
 ;; Which key C-h shows a tooltip of the available keys
 (which-key-mode)
 
+
 ;; Press F7 for terminal
 (global-set-key (kbd "<f7>") 'vterm)
 
@@ -287,7 +297,7 @@
 ;; Show the ediff control window inside the current frame, don't create a new window.
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
-;; Snippet 
+;; Snippet
 ;; (use-package the-package-name
 ;;   :ensure t ;; install if needed
 ;;   :config
@@ -357,7 +367,7 @@
 ;; Do not outright delete files.
 (setq delete-by-moving-to-trash t)
 
-;; Set up multi cursors 
+;; Set up multi cursors
 (use-package beacon
   :ensure t )
 (use-package multiple-cursors
@@ -462,3 +472,4 @@
       (file-remote-p fp)
     nil))
 (setq consult-preview-excluded-buffers 'buffer-remote-p)
+
