@@ -26,6 +26,34 @@
   :ensure t )
 (use-package which-key
   :ensure t )
+(use-package consult 
+  :ensure t)
+(use-package orderless
+  :ensure t)
+(use-package vertico
+  :ensure t)
+(use-package markdown-mode
+  :ensure t)
+(use-package magit
+  :config
+  ;; Add option to create a GitLab MR
+  (transient-append-suffix 'magit-push "-F"
+    '(1 "-m" "Create Merge Request" "--push-option=merge_request.create"))
+  (global-set-key (kbd "C-x g") 'magit-status)
+  (magit-auto-revert-mode)
+  :ensure t)
+(use-package eglot
+  :ensure t)
+(use-package go-mode
+  :ensure t)
+(use-package treeview
+  :ensure t)
+(use-package evil
+  :ensure t)
+(use-package yaml-mode
+  :ensure t)
+(use-package bash-completion
+  :ensure t)
 
 ;; To load this while using emacs run M-x eval-buffer
 
@@ -53,12 +81,14 @@
 
 ;; Keep auto-save and backup files in one flat directory
 ;; (instead of next to the original files)
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups/")))
+(setq backup-directory-alist '(("." . "~/.config/emacs/backups/")))
 
 ;; Store custom variables in ~/.emacs.d/custom.el (instead of ~/.emacs)
 (setq custom-file (locate-user-emacs-file "custom.el"))
 
 ;; Ensure buffer names are unique
+(use-package uniquify-files
+  :ensure t)
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
@@ -66,6 +96,8 @@
 (which-key-mode)
 
 ;; Press F7 for terminal
+(use-package vterm
+  :ensure t)
 (global-set-key (kbd "<f7>") 'vterm)
 
 ;; Enable indentation and completion using the TAB key.
@@ -399,3 +431,57 @@
 ;;     nil))
 ;; (setq consult-preview-excluded-buffers 'buffer-remote-p)
 
+
+(use-package lsp-mode
+  :ensure t)
+(use-package lsp-ui
+  :ensure t)
+(use-package company
+  :ensure t)
+(use-package flycheck
+  :ensure t)
+(use-package projectile
+  :ensure t)
+
+
+;; Setting Dhall LSP Server
+;; dhall-mode highlight the syntax and run dhall format on save
+;; https://docs.dhall-lang.org/howtos/Text-Editor-Configuration.html
+(use-package dhall-mode
+  :ensure t
+  :config
+  (setq
+    ;; uncomment the next line to disable automatic format
+    ;; dhall-format-at-save nil
+
+    ;; comment the next line to use unicode syntax
+    dhall-format-argumenjts (\` ("--ascii"))
+
+    ;; header-line is obsoleted by lsp-mode
+    dhall-use-header-line nil))
+
+;; lsp-mode provides the lsp client and it configure flymake to explain errors
+(use-package lsp-mode
+  :ensure t
+  :init (setq lsp-keymap-prefix "C-c l")
+  :hook ((dhall-mode . lsp))
+  :commands lsp)
+
+;; lsp-ui shows type annotations on hover
+(use-package lsp-ui
+  :ensure t
+  :hook ((lsp-mode-hook . lsp-ui-mode)))
+
+;; company-lsp simplifies completion-at-point
+;;(use-package completion-at-point
+;;  :ensure t
+;;  :after company
+;;  :init
+;;  (push 'completion-at-point company-backends))
+(push 'completion-at-point company-backends)
+
+(use-package yaml-mode :ensure t)
+(use-package flymake-yamllint
+  :ensure t
+  :config
+  (add-hook 'yaml-mode-hook 'flymake-yamllint-setup))
