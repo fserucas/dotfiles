@@ -60,6 +60,8 @@
   :ensure t)
 (use-package bash-completion
   :ensure t)
+(use-package sudo-edit
+  :ensure t)
 
 ;; To load this while using emacs run M-x eval-buffer
 
@@ -102,9 +104,9 @@
 (which-key-mode)
 
 ;; Press F7 for terminal
-(use-package vterm
+(use-package shell
   :ensure t)
-(global-set-key (kbd "<f7>") 'vterm)
+(global-set-key (kbd "<f7>") 'shell)
 
 ;; Enable indentation and completion using the TAB key.
 (setq tab-always-indent 'complete)
@@ -162,6 +164,10 @@
 ;;   (global-set-key (kbd "C-x g") 'the-package-command))
 
 (column-number-mode)
+(dynamic-completion-mode)
+
+;; Line wrap
+(global-visual-line-mode t)
 
 (use-package beacon
   :ensure t )
@@ -494,6 +500,15 @@
 (setq lsp-idle-delay 0.500)
 ;;(setq  lsp-ui-doc-show-with-mouse nil)
 
+;; Python LSP
+(use-package lsp-pyright
+  :ensure t
+  :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp))))  ; or lsp-deferred
+
+
 (use-package yaml-mode :ensure t)
 ;;(use-package flymake-yamllint
 ;;  :ensure t
@@ -509,7 +524,7 @@
   (interactive "p")
   (cond ((looking-at "\\s(") (forward-list 1) (backward-char 1))
         ((looking-at "\\s)") (forward-char 1) (backward-list 1))
-        (t (self-insert-command (or arg 1 ))))
+        (t (self-insert-command (or arg 1 )))))
 
 ;; GPTel
 ;; M-x gptel to run the prompt buffer
@@ -543,3 +558,13 @@
 ;;	;; Use the default backend
 ;;        gptel-backend gpt-backend
 ;;        ))
+
+;; (use-package jira
+;;   :demand t
+;;   :config
+;;   (setq jira-username "jira-email") ;; Jira username (usually, an email)
+;;   (setq jira-base-url "jira-url") ;; Jira instance URL
+;;   ;; API token for JIRA
+;;   ;; See https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/
+;;   (setq jira-token "jira-token"))
+
