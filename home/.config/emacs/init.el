@@ -14,6 +14,12 @@
  ;; If there is more than one, they won't work right.
  )
 
+;;(use-package zenburn-mode
+;;y  :ensure t)
+;;(load-theme 'zenburn t)
+(set-face-attribute 'default nil :font "Source Code Pro Medium" :height 130)
+(set-fontset-font t 'latin "Noto Sans")
+
 ;;(use-package the-package-name
 ;;  :ensure t ;; install if needed
 ;;  :config
@@ -443,7 +449,6 @@
 (use-package projectile
   :ensure t)
 
-
 ;; Setting Dhall LSP Server
 ;; dhall-mode highlight the syntax and run dhall format on save
 ;; https://docs.dhall-lang.org/howtos/Text-Editor-Configuration.html
@@ -467,6 +472,10 @@
   :hook ((dhall-mode . lsp))
   :commands lsp)
 
+(setenv "LSP_USE_PLISTS" "true")
+(require 'lsp-mode)
+(add-hook 'prog-mode-hook #'lsp)
+
 ;; lsp-ui shows type annotations on hover
 (use-package lsp-ui
   :ensure t
@@ -479,6 +488,11 @@
 ;;  :init
 ;;  (push 'completion-at-point company-backends))
 (push 'completion-at-point company-backends)
+
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
+(setq lsp-idle-delay 0.500)
+;;(setq  lsp-ui-doc-show-with-mouse nil)
 
 (use-package yaml-mode :ensure t)
 ;;(use-package flymake-yamllint
@@ -495,4 +509,37 @@
   (interactive "p")
   (cond ((looking-at "\\s(") (forward-list 1) (backward-char 1))
         ((looking-at "\\s)") (forward-char 1) (backward-list 1))
-        (t (self-insert-command (or arg 1)))))
+        (t (self-insert-command (or arg 1 ))))
+
+;; GPTel
+;; M-x gptel to run the prompt buffer
+;; api-key "api-key"
+;; chat gpt token key gpt-token-key
+(use-package gptel :ensure t)
+;;(use-package gptel
+;;  :ensure t
+;;  :config
+;;  (setq api-key "api-key"
+;;	gpt-backend (gptel-make-openai "GPT Github Model"
+;;          :host "models.inference.ai.azure.com"
+;;          :endpoint "/chat/completions"
+;;          :stream t
+;;          :key api-key
+;;          :models '(gpt-4o))
+;;	mistral-backend (gptel-make-openai "Mistral Github Model"
+;;          :host "models.inference.ai.azure.com"
+;;          :endpoint "/chat/completions"
+;;          :stream t
+;;          :key api-key
+;;          :models '(Ministral-3B))
+;;	;; podman run --network=host -d -v ollama:/root/.ollama --name ollama ollama/ollama
+;;	;; podman run --network=host -it --rm ollama/ollama pull llama3.3
+;;	;; To test the model, run the prompt with
+;;	;; podman run --network=host -it --rm ollama/ollama run llama3.3
+;;	ollama-local-backed (gptel-make-ollama "Local Ollama 3.2"
+;;          :host "localhost:11434"
+;;          :stream t
+;;          :models '(llama3.2:latest))
+;;	;; Use the default backend
+;;        gptel-backend gpt-backend
+;;        ))
