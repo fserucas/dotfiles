@@ -62,6 +62,9 @@
   :ensure t)
 (use-package sudo-edit
   :ensure t)
+(use-package transpose-frame
+  :ensure t)
+
 
 ;; To load this while using emacs run M-x eval-buffer
 
@@ -531,6 +534,31 @@
 ;; api-key "api-key"
 ;; chat gpt token key gpt-token-key
 (use-package gptel :ensure t)
+(use-package gptel
+  :ensure t
+  :config
+  (setq ;; Granite Dense
+        ollama-local-backed (gptel-make-ollama "Ollama Granite Dense"
+          :host "openwebui.podman.internal:11434"
+          :stream t
+          :models '(granite3.1-dense:8b))
+
+	;; Granite Code
+        ollama-local-backed (gptel-make-ollama "Ollama Granite Code"
+          :host "openwebui.podman.internal:11434"
+          :stream t
+          :models '(granite-code:20b))
+
+	ramalama (gptel-make-openai "Ramalama Gemma3 12b"
+	  :host "openwebui.podman.internal:8081"
+	  :protocol "http"
+          :stream t
+          :models '(test))
+
+        gptel-backend ollama-local-backed
+        ))
+
+
 ;;(use-package gptel
 ;;  :ensure t
 ;;  :config
@@ -568,3 +596,18 @@
 ;;   ;; See https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/
 ;;   (setq jira-token "jira-token"))
 
+;; Haskell LSP
+(use-package eglot
+  :ensure t
+  :config
+  (add-hook 'haskell-mode-hook 'eglot-ensure)
+  :config
+  (setq-default eglot-workspace-configuration
+                '((haskell
+                   (plugin
+                    (stan
+                     (globalOn . :json-false))))))  ;; disable stan
+  :custom
+  (eglot-autoshutdown t)  ;; shutdown language server after closing last file
+  (eglot-confirm-server-initiated-edits nil)  ;; allow edits without confirmation
+  )
