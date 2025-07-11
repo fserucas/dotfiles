@@ -3,6 +3,11 @@ set ruler
 set nocompatible
 set hlsearch
 set visualbell
+
+" # Vim Plug - To install Plugins
+""   curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+""     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 call plug#begin()
 "" The default plugin directory will be as follows:
 ""   - Vim (Linux/macOS): '~/.vim/plugged'
