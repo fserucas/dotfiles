@@ -3,7 +3,7 @@ set ruler
 set nocompatible
 set hlsearch
 set visualbell
-"call plug#begin()
+call plug#begin()
 "" The default plugin directory will be as follows:
 ""   - Vim (Linux/macOS): '~/.vim/plugged'
 ""   - Vim (Windows): '~/vimfiles/plugged'
@@ -48,7 +48,12 @@ set visualbell
 "
 "" Initialize plugin system
 "call plug#end()
+
 call plug#begin()
+
+" List your plugins here
+Plug 'tpope/vim-sensible'
+
 Plug 'vmchale/dhall-vim'
 Plug 'elzr/vim-json'
 Plug 'xadillax/json-formatter.vim'
@@ -75,6 +80,8 @@ Plug 'valloric/youcompleteme'
 Plug 'ekalinin/dockerfile.vim'
 Plug 'wting/rust.vim'
 
+" To install Coc https://github.com/neoclide/coc.nvim
+" curl -sL install-node.vercel.app/lts | bash
 " Use release branch (recommended)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
