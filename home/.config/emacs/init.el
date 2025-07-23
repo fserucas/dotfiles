@@ -1,12 +1,17 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
+;; and `package-pinned-packages`. Most users will not need or want to do this.
+;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(consult orderless vertico markdown-mode magit eglot go-mode treeview evil ## yaml-mode bash-completion)))
+ '(package-selected-packages '(consult orderless vertico markdown-mode magit eglot go-mode treeview evil ## yaml-mode bash-completion)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -17,7 +22,9 @@
 ;;(use-package zenburn-mode
 ;;y  :ensure t)
 ;;(load-theme 'zenburn t)
-(set-face-attribute 'default nil :font "Source Code Pro Medium" :height 130)
+(set-face-attribute 'default nil
+:font "Source Code Pro Medium"
+:height 130)
 (set-fontset-font t 'latin "Noto Sans")
 
 ;;(use-package the-package-name
@@ -27,43 +34,42 @@
 ;;  (global-set-key (kbd "C-x g") 'the-package-command))
 
 (use-package vertico
-  :ensure t )
+:ensure t )
 (use-package orderless
-  :ensure t )
+:ensure t )
 (use-package which-key
-  :ensure t )
-(use-package consult 
-  :ensure t)
+:ensure t )
+(use-package consult
+:ensure t)
 (use-package orderless
-  :ensure t)
+:ensure t)
 (use-package vertico
-  :ensure t)
+:ensure t)
 (use-package markdown-mode
-  :ensure t)
+:ensure t)
 (use-package magit
-  :config
+:config
   ;; Add option to create a GitLab MR
-  (transient-append-suffix 'magit-push "-F"
-    '(1 "-m" "Create Merge Request" "--push-option=merge_request.create"))
-  (global-set-key (kbd "C-x g") 'magit-status)
-  (magit-auto-revert-mode)
-  :ensure t)
+  (transient-append-suffix 'magit-push "-F" '(1 "-m" "Create Merge Request" "--push-option=merge_request.create"))
+(global-set-key (kbd "C-x g") 'magit-status)
+(magit-auto-revert-mode)
+:ensure t)
 (use-package eglot
-  :ensure t)
+:ensure t)
 (use-package go-mode
-  :ensure t)
+:ensure t)
 (use-package treeview
-  :ensure t)
+:ensure t)
 (use-package evil
-  :ensure t)
+:ensure t)
 (use-package yaml-mode
-  :ensure t)
+:ensure t)
 (use-package bash-completion
-  :ensure t)
+:ensure t)
 (use-package sudo-edit
-  :ensure t)
+:ensure t)
 (use-package transpose-frame
-  :ensure t)
+:ensure t)
 
 
 ;; To load this while using emacs run M-x eval-buffer
@@ -99,7 +105,7 @@
 
 ;; Ensure buffer names are unique
 (use-package uniquify-files
-  :ensure t)
+:ensure t)
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'forward)
 
@@ -108,7 +114,7 @@
 
 ;; Press F7 for terminal
 (use-package shell
-  :ensure t)
+:ensure t)
 (global-set-key (kbd "<f7>") 'shell)
 
 ;; Enable indentation and completion using the TAB key.
@@ -118,18 +124,19 @@
 (add-hook 'completion-at-point-functions #'cape-file)
 
 (use-package corfu
-  :ensure t)
+:ensure t)
 (use-package corfu-terminal
-  :ensure t)
+:ensure t)
 (use-package cape
-  :ensure t)
+:ensure t)
 
 ;; Activate in buffer completion everywhere.
 (global-corfu-mode)
 
 ;; enable corfu in terminal.
 ;; This is needed until child frame support for terminal Emacs arrives.
-(unless (display-graphic-p) (corfu-terminal-mode +1))
+(unless (display-graphic-p)
+(corfu-terminal-mode +1))
 
 ;; For manual corfu, use SPC to add orderless separator.
 (keymap-set corfu-map "SPC"  'corfu-insert-separator)
@@ -162,7 +169,7 @@
 ;; Show the ediff control window inside the current frame, don't create a new window.
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
-;; Snippet 
+;; Snippet
 ;; (use-package the-package-name
 ;;   :ensure t ;; install if needed
 ;;   :config
@@ -176,7 +183,7 @@
 (global-visual-line-mode t)
 
 (use-package beacon
-  :ensure t )
+:ensure t )
 ;;(package! beacon)
 (beacon-mode 1)
 
@@ -200,7 +207,7 @@
 ;; ;; Do not outright delete files.
 ;; (setq delete-by-moving-to-trash t)
 
-;; ;; Set up multi cursors 
+;; ;; Set up multi cursors
 ;; (require 'package)
 ;; (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 ;; (custom-set-variables
@@ -451,23 +458,22 @@
 
 
 (use-package lsp-mode
-  :ensure t)
+:ensure t)
 (use-package lsp-ui
-  :ensure t)
+:ensure t)
 (use-package company
-  :ensure t)
+:ensure t)
 (use-package flycheck
-  :ensure t)
+:ensure t)
 (use-package projectile
-  :ensure t)
+:ensure t)
 
 ;; Setting Dhall LSP Server
 ;; dhall-mode highlight the syntax and run dhall format on save
 ;; https://docs.dhall-lang.org/howtos/Text-Editor-Configuration.html
 (use-package dhall-mode
-  :ensure t
-  :config
-  (setq
+:ensure t
+:config (setq
     ;; uncomment the next line to disable automatic format
     ;; dhall-format-at-save nil
 
@@ -479,10 +485,10 @@
 
 ;; lsp-mode provides the lsp client and it configure flymake to explain errors
 (use-package lsp-mode
-  :ensure t
-  :init (setq lsp-keymap-prefix "C-c l")
-  :hook ((dhall-mode . lsp))
-  :commands lsp)
+:ensure t
+:init (setq lsp-keymap-prefix "C-c l")
+:hook ((dhall-mode . lsp))
+:commands lsp)
 
 (setenv "LSP_USE_PLISTS" "true")
 (require 'lsp-mode)
@@ -490,8 +496,8 @@
 
 ;; lsp-ui shows type annotations on hover
 (use-package lsp-ui
-  :ensure t
-  :hook ((lsp-mode-hook . lsp-ui-mode)))
+:ensure t
+:hook ((lsp-mode-hook . lsp-ui-mode)))
 
 ;; company-lsp simplifies completion-at-point
 ;;(use-package completion-at-point
@@ -508,14 +514,15 @@
 
 ;; Python LSP
 (use-package lsp-pyright
-  :ensure t
-  :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
+:ensure t
+:custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
   :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp))))  ; or lsp-deferred
+(require 'lsp-pyright)
+(lsp))))  ; or lsp-deferred
 
 
-(use-package yaml-mode :ensure t)
+(use-package yaml-mode
+:ensure t)
 ;;(use-package flymake-yamllint
 ;;  :ensure t
 ;;  :config
@@ -525,41 +532,46 @@
 
 (global-set-key "%" 'match-paren)
 
-(defun match-paren (arg)
-  "Go to the matching paren if on a paren; otherwise insert %."
-  (interactive "p")
-  (cond ((looking-at "\\s(") (forward-list 1) (backward-char 1))
-        ((looking-at "\\s)") (forward-char 1) (backward-list 1))
-        (t (self-insert-command (or arg 1 )))))
+(defun match-paren (arg) "Go to the matching paren if on a paren; otherwise insert %." (interactive "p")
+(cond ((looking-at "\\s(")
+(forward-list 1)
+(backward-char 1))
+((looking-at "\\s)")
+(forward-char 1)
+(backward-list 1))
+(t (self-insert-command (or arg 1 )))))
+
+;; Get Environment Variables
+(defvar *gemini-api-key* (getenv "GEMINI_API_KEY"))
 
 ;; GPTel
 ;; M-x gptel to run the prompt buffer
 ;; api-key "api-key"
 ;; chat gpt token key gpt-token-key
-(use-package gptel :ensure t)
 (use-package gptel
-  :ensure t
-  :config
-  (setq ;; Granite Dense
+:ensure t)
+(use-package gptel
+:ensure t
+:config (setq ;; Granite Dense
         ollama-local-backed (gptel-make-ollama "Ollama Granite Dense"
-          :host "openwebui.podman.internal:11434"
-          :stream t
-          :models '(granite3.1-dense:8b))
+:host "openwebui.podman.internal:11434"
+:stream t
+:models '(granite3.1-dense:8b))
 
 	;; Granite Code
         ollama-local-backed (gptel-make-ollama "Ollama Granite Code"
-          :host "openwebui.podman.internal:11434"
-          :stream t
-          :models '(granite-code:20b))
-
-	ramalama (gptel-make-openai "Ramalama Gemma3 12b"
-	  :host "openwebui.podman.internal:8081"
-	  :protocol "http"
-          :stream t
-          :models '(test))
-
-        gptel-backend ollama-local-backed
-        ))
+:host "openwebui.podman.internal:11434"
+:stream t
+:models '(granite-code:20b))
+ramalama (gptel-make-openai "Ramalama Gemma3 12b"
+:host "openwebui.podman.internal:8081"
+:protocol "http"
+:stream t
+:models '(test))
+gemini-red-hat (gptel-make-gemini "Gemini Red Hat"
+:key *gemini-api-key*
+:stream t)
+gptel-backend ollama-local-backed))
 
 
 ;;(use-package gptel
@@ -601,17 +613,11 @@
 
 ;; Haskell LSP
 (use-package eglot
-  :ensure t
-  :config
-  (add-hook 'haskell-mode-hook 'eglot-ensure)
-  :config
-  (setq-default eglot-workspace-configuration
-                '((haskell
-                   (plugin
-                    (stan
-                     (globalOn . :json-false))))))  ;; disable stan
-  :custom
-  (eglot-autoshutdown t)  ;; shutdown language server after closing last file
+:ensure t
+:config (add-hook 'haskell-mode-hook 'eglot-ensure)
+:config (setq-default eglot-workspace-configuration '((haskell (plugin (stan (globalOn .
+:json-false))))))  ;; disable stan
+  :custom (eglot-autoshutdown t)  ;; shutdown language server after closing last file
   (eglot-confirm-server-initiated-edits nil)  ;; allow edits without confirmation
   )
 
