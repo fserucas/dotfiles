@@ -483,13 +483,20 @@ reduceColumn _ _ = error "UNIMPLEMENTED"
 {-# INLINE reduceColumn #-}
 
 -- | An internal, column version of zip.
-zipColumns :: Column -> Column -> Column
-zipColumns (BoxedColumn column) (BoxedColumn other) = BoxedColumn (VG.zip column other)
-zipColumns (BoxedColumn column) (UnboxedColumn other) = BoxedColumn (VB.generate (min (VG.length column) (VG.length other)) (\i -> (column VG.! i, other VG.! i)))
-zipColumns (UnboxedColumn column) (BoxedColumn other) = BoxedColumn (VB.generate (min (VG.length column) (VG.length other)) (\i -> (column VG.! i, other VG.! i)))
-zipColumns (UnboxedColumn column) (UnboxedColumn other) = UnboxedColumn (VG.zip column other)
-zipColumns _ _ = error "Zip is unimplemented"
-{-# INLINE zipColumns #-}
+zipColumn :: Column -> Column -> Column
+zipColumn (UnboxedColumn column) (BoxedColumn other) = BoxedColumn (VB.generate (min (VG.length column) (VG.length other)) (\i -> (column VG.! i, other VG.! i)))
+zipColumn (UnboxedColumn column) (UnboxedColumn other) = UnboxedColumn (VG.zip column other)
+zipColumn (UnboxedColumn column) (OptionalColumn optcolumn) = BoxedColumn (VG.zip (VB.convert column) optcolumn)
+
+zipColumn (BoxedColumn column) (BoxedColumn other) = BoxedColumn (VG.zip (VB.convert column) (VB.convert other))
+zipColumn (BoxedColumn column) (UnboxedColumn other) = BoxedColumn (VG.zip (VB.convert column) (VB.convert other))
+zipColumn (BoxedColumn column) (OptionalColumn optcolumn) = BoxedColumn (VG.zip (VB.convert column) optcolumn)
+
+zipColumn (OptionalColumn optcolumn) (BoxedColumn column) = BoxedColumn (VG.zip optcolumn (VB.convert column))
+zipColumn (OptionalColumn optcolumn) (UnboxedColumn column) = BoxedColumn (VG.zip optcolumn (VB.convert column))
+zipColumn (OptionalColumn optcolumn) (OptionalColumn optother) = BoxedColumn (VG.zip optcolumn optother)
+zipColumn _ _ = error "Zip is unimplemented"
+{-# INLINE zipColumn #-}
 
 -- | An internal, column version of zipWith.
 zipWithColumns :: forall a b c . (Columnable a, Columnable b, Columnable c) => (a -> b -> c) -> Column -> Column -> Maybe Column
