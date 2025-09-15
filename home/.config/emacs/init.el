@@ -155,7 +155,7 @@
 (global-set-key (kbd "<f3>") 'flymake-goto-next-error)
 
 ;; Use F6 to enable evil-mode.
-(global-set-key (kbd "<f6>") 'evil-mode)
+(global-set-key (kbd "<f8>") 'evil-mode)
 
 ;; Add MELPA registry for Magit.
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -165,6 +165,9 @@
 
 ;; Eglot Format
 (global-set-key (kbd "C-x e") 'eglot-format)
+
+;; Comment Uncomment Region
+(global-set-key (kbd "<f6>") 'comment-or-uncomment-region )
 
 ;; Show the ediff control window inside the current frame, don't create a new window.
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -571,7 +574,27 @@ ramalama (gptel-make-openai "Ramalama Gemma3 12b"
 gemini-red-hat (gptel-make-gemini "Gemini Red Hat"
 :key *gemini-api-key*
 :stream t)
-gptel-backend ollama-local-backed))
+gptel-backend gemini-red-hat))
+
+;; Gptel auto-complete
+;; Install package unless in not installed
+(unless
+ (package-installed-p 'gptel-autocomplete)
+ (package-vc-install
+ '(gptel-autocomplete :url "https://github.com/JDNdeveloper/gptel-autocomplete.git")))
+
+(require 'gptel-autocomplete)
+
+;; GPTel gptel-autocomplete key bindings
+;; Create prefix command
+(define-prefix-command 'gptel-autocomplet-prefix-map)
+(global-set-key (kbd "C-q") 'gptel-autocomplet-prefix-map)
+;; Bind commands to the prefix
+(define-key gptel-autocomplet-prefix-map (kbd "q") 'gptel-complete)
+(define-key gptel-autocomplet-prefix-map (kbd "w") 'gptel-accept-completion)
+;; Bind example to set in existing prefix
+;;(global-set-key (kbd "C-x q") 'gptel-complete)
+;;(global-set-key (kbd "C-x w") 'gptel-accept-completion)
 
 
 ;;(use-package gptel
@@ -663,9 +686,28 @@ gptel-backend ollama-local-backed))
 
 ;; ;; Typst LSP and Highlighter
 ;; (use-package typst-ts-mode
-;;   :elpaca (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
+;;   :ensure t
+;;   (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
 ;;   :custom
 ;;   (typst-ts-mode-watch-options "--open"))
+
+;; (unless
+;;  (package-installed-p 'typst-ts-mode)
+;;  (package-vc-install
+;;  '(typst-ts-mode :url "https://codeberg.org/meow_king/typst-ts-mode.git" :rev "develop")))
+
+;; (use-package typst-ts-mode
+;;   :ensure t
+;;   :custom
+;;   (typst-ts-watch-options "--open")
+;;   (typst-ts-mode-grammar-location (expand-file-name "tree-sitter/libtree-sitter-typst.so" user-emacs-directory))
+;;   (typst-ts-mode-enable-raw-blocks-highlight t)
+;;   :config
+;;   (keymap-set typst-ts-mode-map "C-c C-c" #'typst-ts-tmenu))
+
+;; File extension mode set for Typst
+(require 'typst-ts-mode)
+(add-to-list 'auto-mode-alist '("\\.typ\\'" . typst-ts-mode))
 
 ;; Acitivities Session manager
 ;; https://github.com/alxlphapapa/activities.el
@@ -698,7 +740,7 @@ gptel-backend ollama-local-backed))
   ;; (setq aider-args '("--model" "o4-mini"))
   ;; (setenv "OPENAI_API_KEY" <your-openai-api-key>)
   ;; Or use your personal config file
-  ;; (setq aider-args `("--config" ,(expand-file-name "~/.aider.conf.yml")))
+  (setq aider-args `("--config" ,(expand-file-name "~/.aider.conf.yml")))
   ;; ;;
   ;; Optional: Set a key binding for the transient menu
   (global-set-key (kbd "C-c a") 'aider-transient-menu) ;; for wider screen
@@ -722,3 +764,7 @@ gptel-backend ollama-local-backed))
 
 (use-package elisp-lint
 :ensure t)
+
+;; Highlight Columns
+(use-package hl-column)
+;;(global-hl-column-mode)
