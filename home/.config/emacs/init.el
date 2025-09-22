@@ -571,6 +571,7 @@ ramalama (gptel-make-openai "Ramalama Gemma3 12b"
 :protocol "http"
 :stream t
 :models '(test))
+gptel-model 'gemini-2.5-pro
 gemini-red-hat (gptel-make-gemini "Gemini Red Hat"
 :key *gemini-api-key*
 :stream t)
