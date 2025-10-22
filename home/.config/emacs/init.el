@@ -593,6 +593,7 @@ gptel-backend gemini-red-hat))
 ;; Bind commands to the prefix
 (define-key gptel-autocomplet-prefix-map (kbd "q") 'gptel-complete)
 (define-key gptel-autocomplet-prefix-map (kbd "w") 'gptel-accept-completion)
+(define-key gptel-autocomplet-prefix-map (kbd "e") 'gptel-rewrite)
 ;; Bind example to set in existing prefix
 ;;(global-set-key (kbd "C-x q") 'gptel-complete)
 ;;(global-set-key (kbd "C-x w") 'gptel-accept-completion)
@@ -769,3 +770,6 @@ gptel-backend gemini-red-hat))
 ;; Highlight Columns
 (use-package hl-column)
 ;;(global-hl-column-mode)
+
+(add-hook 'before-save-hook
+          'delete-trailing-whitespace)
