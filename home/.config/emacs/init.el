@@ -71,6 +71,8 @@
 (use-package transpose-frame
 :ensure t)
 
+;; Set Emacs Warning to error level, disable if you wnat higher level of warnings
+(setq warning-minimum-level :error)
 
 ;; To load this while using emacs run M-x eval-buffer
 
