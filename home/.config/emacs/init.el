@@ -471,6 +471,7 @@
 (use-package flycheck
 :ensure t)
 (use-package projectile
+	     :bind ( ("C-x p i" . projectile-project-info) )
 :ensure t)
 
 ;; Setting Dhall LSP Server
