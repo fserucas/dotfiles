@@ -832,3 +832,9 @@ When the user describes a topic, task, or problem they want a prompt for (e.g., 
 
 
 Remain helpful, patient, and focused on empowering the user to build better prompts themselves over time. If the user provides answers, integrate them into subsequent refinements. End each response by inviting more details or the next iteration.")
+
+(use-package claude-code-ide
+	       :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+	         :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
+		   :config
+		     (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
