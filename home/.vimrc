@@ -109,6 +109,8 @@ Plug 'liuchengxu/vim-which-key', { 'on': ['WhichKey', 'WhichKey!'] }
 " " autocmd! User vim-which-key call which_key#register('<Space>',
 " 'g:which_key_map')
 
+Plug 'dpelle/vim-languagetool'
+
 call plug#end()
 
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
