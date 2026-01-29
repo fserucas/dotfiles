@@ -70,7 +70,8 @@
 :ensure t)
 (use-package transpose-frame
 :ensure t)
-(use-package anzu)
+(use-package anzu
+:ensure t)
 (anzu-mode +1)
 ;; Enable rich annotations using the Marginalia package
 (use-package marginalia
