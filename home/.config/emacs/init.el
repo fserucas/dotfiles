@@ -52,6 +52,15 @@
   ;; Add option to create a GitLab MR
   (transient-append-suffix 'magit-push "-F" '(1 "-m" "Create Merge Request" "--push-option=merge_request.create"))
 (global-set-key (kbd "C-x g") 'magit-status)
+;; (with-eval-after-load 'magit-stash
+;;     (defun my-magit-stash-push-item ()
+;;       "Stash with --push."
+;;       (interactive)
+;;       (magit-stash-push))
+
+;;     (magit-add-popup-action 'magit-stash-menu
+;;       ?P 'my-magit-stash-push-item "Push stash"))
+
 (magit-auto-revert-mode)
 :ensure t)
 (use-package eglot
@@ -797,7 +806,7 @@ gptel-backend gemini-red-hat))
 (add-hook 'before-save-hook
           'delete-trailing-whitespace)
 
-gptel-include-reasoning 'nil
+(gptel-include-reasoning 'nil)
 (gptel-make-preset 'pragmatic-coder
     :system "You are an expert programmer and a pragmatic technical assistant.
 
@@ -898,3 +907,4 @@ I am ready to begin. Please wait for my first question.
   (setq
    auto-save-file-name-transforms `((".*" ,save-dir t))
    backup-directory-alist `((".*" . ,save-dir))))
+(put 'upcase-region 'disabled nil)
