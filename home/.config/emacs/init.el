@@ -220,6 +220,9 @@
 ;;(package! beacon)
 (beacon-mode 1)
 
+;; Load list directory
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+
 ;; ;; Advance Things
 
 ;; ;; Use Emacs to provide passphrase when opening .gpg files
