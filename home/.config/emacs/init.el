@@ -220,8 +220,13 @@
 ;;(package! beacon)
 (beacon-mode 1)
 
-;; Load list directory
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+;; Load local lisp directory
+;; Load all .el files from the local lisp directory
+(let ((lisp-dir (expand-file-name "lisp" user-emacs-directory)))
+  (when (file-directory-p lisp-dir)
+    (add-to-list 'load-path lisp-dir)
+    (dolist (file (directory-files-recursively lisp-dir "\\.el\\'"))
+      (load-file file))))
 
 ;; ;; Advance Things
 
@@ -809,7 +814,7 @@ gptel-backend gemini-red-hat))
 (add-hook 'before-save-hook
           'delete-trailing-whitespace)
 
-(gptel-include-reasoning 'nil)
+(setq gptel-include-reasoning nil)
 (gptel-make-preset 'pragmatic-coder
     :system "You are an expert programmer and a pragmatic technical assistant.
 
