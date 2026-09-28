@@ -22,10 +22,10 @@
 ;;(use-package zenburn-mode
 ;;y  :ensure t)
 ;;(load-theme 'zenburn t)
-(set-face-attribute 'default nil
-:font "Source Code Pro Medium"
-:height 130)
-(set-fontset-font t 'latin "Noto Sans")
+;; (set-face-attribute 'default nil
+;; :font "Source Code Pro Medium"
+;; :height 130)
+;;(set-fontset-font t 'latin "Noto Sans")
 
 ;;(use-package the-package-name
 ;;  :ensure t ;; install if needed
@@ -169,10 +169,40 @@
 (corfu-terminal-mode +1))
 
 ;; For manual corfu, use SPC to add orderless separator.
-(keymap-set corfu-map "SPC"  'corfu-insert-separator)
+(keymap-set corfu-map "SPC" 'corfu-insert-separator)
 
 ;; show completion automatically after a short delay
-;;(setq corfu-auto t)
+;;(setq corfu-auto nil)
+
+;; TAB key: fix indentation if needed, otherwise perform completion
+
+(setq tab-always-indent 'complete)
+
+(use-package corfu
+  :hook (after-init . global-corfu-mode)
+  :custom
+  (corfu-cycle t) ; cycle around to first entry after reaching the last
+  (corfu-preview-current nil) ; don't expand text at point until I press return
+  (corfu-min-width 20)
+  (corfu-on-exact-match 'insert) ; complete if there is only a single candidate
+  (corfu-quit-no-match t)
+  (corfu-quit-at-boundary t)
+  :config
+  (setq corfu-popupinfo-delay '(1.25 . 0.5))
+  (corfu-popupinfo-mode 1) ; shows documentation next to completions
+
+  ;; sort by input history
+  (with-eval-after-load 'savehist
+    (corfu-history-mode 1)
+    (add-to-list 'savehist-additional-variables 'corfu-history))
+  )
+
+(use-package cape
+  :defer 1
+  :config
+  (add-hook 'completion-at-point-functions #'cape-dabbrev 20) ; words from buffer
+  (add-hook 'completion-at-point-functions #'cape-file 20))
+
 
 ;; This mode changes the definition of a word boundary so that word commands
 ;; stop at "Gtk" and "Window" in "GtkWindow"
@@ -227,6 +257,13 @@
     (add-to-list 'load-path lisp-dir)
     (dolist (file (directory-files-recursively lisp-dir "\\.el\\'"))
       (load-file file))))
+
+;; Show the project name in the mode-line
+(setq-default mode-line-format
+              (append mode-line-format
+                      '(" " ; a space
+                        (:eval (when-let ((project (project-current)))
+                                 (format " [%s]" (project-name project)))))))
 
 ;; ;; Advance Things
 
@@ -323,19 +360,6 @@
 
 ;; ;; Make the completion suggest file paths.
 ;; (add-hook 'completion-at-point-functions #'cape-file)
-
-;; ;; Activate in buffer completion everywhere.
-;; (global-corfu-mode)
-
-;; ;; enable corfu in terminal.
-;; ;; This is needed until child frame support for terminal Emacs arrives.
-;; (unless (display-graphic-p) (corfu-terminal-mode +1))
-
-;; ;; For manual corfu, use SPC to add orderless separator.
-;; (keymap-set corfu-map "SPC"  'corfu-insert-separator)
-
-;; ;; show completion automatically after a short delay
-;; ;;(setq corfu-auto t)
 
 ;; ;; This mode changes the definition of a word boundary so that word commands
 ;; ;; stop at "Gtk" and "Window" in "GtkWindow"
@@ -747,8 +771,8 @@ gptel-backend gemini-red-hat))
 ;;   (keymap-set typst-ts-mode-map "C-c C-c" #'typst-ts-tmenu))
 
 ;; File extension mode set for Typst
-(require 'typst-ts-mode)
-(add-to-list 'auto-mode-alist '("\\.typ\\'" . typst-ts-mode))
+;; (require 'typst-ts-mode)
+;; (add-to-list 'auto-mode-alist '("\\.typ\\'" . typst-ts-mode))
 
 ;; Acitivities Session manager
 ;; https://github.com/alxlphapapa/activities.el

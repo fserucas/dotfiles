@@ -107,7 +107,7 @@
   "Check if PATH is a git clone."
   (file-directory-p (concat path "/.git")))
 
-;;;###autoload
+;;;### autoload
 (defun git-clone (url)
   "Create directory, clone and open URL."
   (interactive "Murl: ")
