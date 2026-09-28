@@ -102,6 +102,11 @@
 ;; Set Emacs Warning to error level, disable if you wnat higher level of warnings
 (setq warning-minimum-level :error)
 
+;; Git Gutter
+(use-package git-gutter
+  :ensure t)
+(global-git-gutter-mode +1)
+
 ;; To load this while using emacs run M-x eval-buffer
 
 ;; Setup completion framework
