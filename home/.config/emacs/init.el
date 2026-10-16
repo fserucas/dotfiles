@@ -177,6 +177,7 @@
 (keymap-set corfu-map "SPC" 'corfu-insert-separator)
 
 ;; show completion automatically after a short delay
+;;(setq corfu-auto t)
 ;;(setq corfu-auto nil)
 
 ;; TAB key: fix indentation if needed, otherwise perform completion
@@ -365,6 +366,19 @@
 
 ;; ;; Make the completion suggest file paths.
 ;; (add-hook 'completion-at-point-functions #'cape-file)
+
+;; ;; Activate in buffer completion everywhere.
+;; (global-corfu-mode)
+
+;; ;; enable corfu in terminal.
+;; ;; This is needed until child frame support for terminal Emacs arrives.
+;; (unless (display-graphic-p) (corfu-terminal-mode +1))
+
+;; ;; For manual corfu, use SPC to add orderless separator.
+;; (keymap-set corfu-map "SPC"  'corfu-insert-separator)
+
+;; ;; show completion automatically after a short delay
+;; ;;(setq corfu-auto t)
 
 ;; ;; This mode changes the definition of a word boundary so that word commands
 ;; ;; stop at "Gtk" and "Window" in "GtkWindow"
@@ -754,12 +768,14 @@ gptel-backend gemini-red-hat))
 ;; (add-hook 'after-init-hook #'elpaca-process-queues)
 ;; (elpaca `(,@elpaca-order))
 
-;; ;; Typst LSP and Highlighter
+;; Typst LSP and Highlighter
 ;; (use-package typst-ts-mode
 ;;   :ensure t
 ;;   (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
 ;;   :custom
 ;;   (typst-ts-mode-watch-options "--open"))
+;; (use-package typst-ts-mode
+;;   :vc (:url "https://codeberg.org/meow_king/typst-ts-mode.git"))
 
 ;; (unless
 ;;  (package-installed-p 'typst-ts-mode)
@@ -776,8 +792,65 @@ gptel-backend gemini-red-hat))
 ;;   (keymap-set typst-ts-mode-map "C-c C-c" #'typst-ts-tmenu))
 
 ;; File extension mode set for Typst
-;; (require 'typst-ts-mode)
-;; (add-to-list 'auto-mode-alist '("\\.typ\\'" . typst-ts-mode))
+  :ensure t
+  :vc (:url "https://codeberg.org/meow_king/typst-ts-mode.git")
+  :custom
+  ;;(typst-ts-watch-options "--open")
+  (typst-ts-mode-grammar-location (expand-file-name "elps/tree-sitter/libtree-sitter-typst.so" user-emacs-directory))
+  (typst-ts-mode-enable-raw-blocks-highlight t)
+  :config
+  (keymap-set typst-ts-mode-map "C-c C-c" #'typst-ts-tmenu)
+  :config
+  (setq typst-ts-mode-enable-raw-blocks-highlight t))
+
+(use-package typst-ts-mode
+  ;; :elpaca
+  ;; (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
+  :vc (:url "https://github.com/uben0/tree-sitter-typst.git")
+  :custom
+  (typst-ts-mode-watch-options "--open"))
+
+;; File extension mode set for Tmypst
+(require 'typst-ts-mode)
+(add-to-list 'auto-mode-alist '("\\.typ\\'" . typst-ts-mode))
+
+(with-eval-after-load 'eglot
+  (with-eval-after-load 'typst-ts-mode
+    (add-to-list 'eglot-server-programs
+                 `((typst-ts-mode) .
+                   ,(eglot-alternatives `(,typst-ts-lsp-download-path
+                                          "tinymist"
+                                          "typst-lsp"))))))
+
+(add-to-list 'treesit-language-source-alist
+             '(typst "https://github.com/SeniorMars/tree-sitter-typst"))
+
+;; 1. Install and load a beautiful, vibrant dark theme
+(use-package doom-themes
+  :ensure t
+  :config
+(load-theme 'doom-one t))
+
+;; 2. Install rainbow brackets to make your code text pop
+(use-package rainbow-delimiters
+    :ensure t)
+
+;; 3. Main Typst configuration block
+(use-package typst-ts-mode
+  :ensure t
+  :mode "\\.typ$"
+  :hook ((typst-ts-mode . rainbow-delimiters-mode)
+	 (typst-ts-mode . eglot-ensure))
+  :config
+  ;; Enable rich coloring for embedded code blocks
+  (setq typst-ts-mode-enable-raw-blocks-highlight t)
+
+  ;; Custom typography styling to make elements stand out beautifully
+  (custom-set-faces
+     '(typst-ts-markup-heading-face ((t (:inherit font-lock-keyword-face :weight bold :height 1.3 :foreground "#51afef"))))
+     '(typst-ts-markup-bold-face    ((t (:weight bold :foreground "#ff6c6b"))))
+     '(typst-ts-markup-italic-face  ((t (:slant italic :foreground "#da8548"))))
+     '(typst-ts-markup-raw-face     ((t (:background "#21242b" :foreground "#98be65"))))))
 
 ;; Acitivities Session manager
 ;; https://github.com/alxlphapapa/activities.el
@@ -844,6 +917,7 @@ gptel-backend gemini-red-hat))
           'delete-trailing-whitespace)
 
 (setq gptel-include-reasoning nil)
+
 (gptel-make-preset 'pragmatic-coder
     :system "You are an expert programmer and a pragmatic technical assistant.
 
